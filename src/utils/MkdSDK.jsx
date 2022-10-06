@@ -29,11 +29,10 @@ export default function MkdSDK() {
       }),
     })
       .then((res) => {
-        console.log(res);
         return res.json();
       })
       .then((data) => {
-        console.log(data);
+        localStorage.setItem("token", data.token);
       });
   };
 
@@ -101,7 +100,26 @@ export default function MkdSDK() {
   };
 
   this.check = async function (role) {
-    //TODO
+    fetch("https://reacttask.mkdlabs.com/v2/api/lambda/check", {
+      method: "post",
+
+      headers: {
+        "Content-Type": "application/json",
+        "x-project": "cmVhY3R0YXNrOjVmY2h4bjVtOGhibzZqY3hpcTN4ZGRvZm9kb2Fjc2t5ZQ==",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+
+      body: JSON.stringify({
+        role: role,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log("in check");
+        console.log(data);
+      });
   };
 
   return this;

@@ -29,6 +29,7 @@ const AdminLoginPage = () => {
     let sdk = new MkdSDK();
 
     sdk.login(data.email, data.password, "admin");
+    sdk.check("admin");
     //TODO
   };
 
