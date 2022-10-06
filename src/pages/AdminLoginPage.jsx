@@ -15,6 +15,7 @@ const AdminLoginPage = () => {
     .required();
 
   const { dispatch } = React.useContext(AuthContext);
+
   const navigate = useNavigate();
   const {
     register,
@@ -27,10 +28,10 @@ const AdminLoginPage = () => {
 
   const onSubmit = async (data) => {
     let sdk = new MkdSDK();
-
-    sdk.login(data.email, data.password, "admin");
-    sdk.check("admin");
-    //TODO
+    sdk.login(data.email, data.password, "admin").then((data) => {
+      dispatch({ type: "LOGIN", payload: { user: data.user_id, token: data.token, role: data.role } });
+      navigate("/admin/dashboard");
+    });
   };
 
   return (

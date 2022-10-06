@@ -2,7 +2,7 @@ export default function MkdSDK() {
   this._baseurl = "https://reacttask.mkdlabs.com";
   this._project_id = "reacttask";
   this._secret = "d9hedycyv6p7zw8xi34t9bmtsjsigy5t7";
-  this._table = "";
+  this._table = "video";
   this._custom = "";
   this._method = "";
 
@@ -14,26 +14,31 @@ export default function MkdSDK() {
   };
 
   this.login = async function (email, password, role) {
-    fetch("https://reacttask.mkdlabs.com/v2/api/lambda/login", {
-      method: "post",
+    return new Promise((resolve, reject) => {
+      fetch("https://reacttask.mkdlabs.com/v2/api/lambda/login", {
+        method: "post",
 
-      headers: {
-        "Content-Type": "application/json",
-        "x-project": "cmVhY3R0YXNrOjVmY2h4bjVtOGhibzZqY3hpcTN4ZGRvZm9kb2Fjc2t5ZQ==",
-      },
+        headers: {
+          "Content-Type": "application/json",
+          "x-project": "cmVhY3R0YXNrOjVmY2h4bjVtOGhibzZqY3hpcTN4ZGRvZm9kb2Fjc2t5ZQ==",
+        },
 
-      body: JSON.stringify({
-        email: email,
-        password: password,
-        role: role,
-      }),
-    })
-      .then((res) => {
-        return res.json();
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          role: role,
+        }),
       })
-      .then((data) => {
-        localStorage.setItem("token", data.token);
-      });
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          localStorage.setItem("token", data.token);
+          if (data.role === "admin") {
+            resolve(data);
+          }
+        });
+    });
   };
 
   this.getHeader = function () {
@@ -100,26 +105,30 @@ export default function MkdSDK() {
   };
 
   this.check = async function (role) {
-    fetch("https://reacttask.mkdlabs.com/v2/api/lambda/check", {
-      method: "post",
+    return new Promise((resolve, reject) => {
+      fetch("https://reacttask.mkdlabs.com/v2/api/lambda/check", {
+        method: "post",
 
-      headers: {
-        "Content-Type": "application/json",
-        "x-project": "cmVhY3R0YXNrOjVmY2h4bjVtOGhibzZqY3hpcTN4ZGRvZm9kb2Fjc2t5ZQ==",
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
+        headers: {
+          "Content-Type": "application/json",
+          "x-project": "cmVhY3R0YXNrOjVmY2h4bjVtOGhibzZqY3hpcTN4ZGRvZm9kb2Fjc2t5ZQ==",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
 
-      body: JSON.stringify({
-        role: role,
-      }),
-    })
-      .then((res) => {
-        return res.json();
+        body: JSON.stringify({
+          role: role,
+        }),
       })
-      .then((data) => {
-        console.log("in check");
-        console.log(data);
-      });
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          if (data.OK) {
+            resolve(data);
+          }
+          console.log(data);
+        });
+    });
   };
 
   return this;

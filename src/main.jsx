@@ -11,10 +11,7 @@ function renderRoutes(role) {
     case "admin":
       return (
         <Routes>
-          <Route
-            path="/admin/dashboard"
-            element={<AdminDashboardPage />}
-          ></Route>
+          <Route path="/admin/dashboard" element={<AdminDashboardPage />}></Route>
         </Routes>
       );
       break;
@@ -36,13 +33,10 @@ function Main() {
     <div className="h-full">
       <div className="flex w-full">
         <div className="w-full">
-          <div className="page-wrapper w-full py-10 px-5">
-            {!state.isAuthenticated
-              ? renderRoutes("none")
-              : renderRoutes(state.role)}
-          </div>
+          <div className="page-wrapper w-full py-10 px-5">{!state.isAuthenticated ? renderRoutes("none") : renderRoutes(state.role)}</div>
         </div>
       </div>
+
       <SnackBar />
     </div>
   );

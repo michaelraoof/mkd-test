@@ -1,6 +1,6 @@
 import React, { useReducer } from "react";
 import MkdSDK from "./utils/MkdSDK";
-
+import { GlobalContext } from "./globalContext";
 export const AuthContext = React.createContext();
 
 const initialState = {
@@ -13,16 +13,22 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case "LOGIN":
-      //TODO
+      localStorage.setItem("role", "admin");
       return {
         ...state,
+        isAuthenticated: true,
+        user: action.payload.user,
+        token: action.payload.token,
+        role: action.payload.role,
       };
     case "LOGOUT":
       localStorage.clear();
+
       return {
         ...state,
         isAuthenticated: false,
         user: null,
+        role: "none",
       };
     default:
       return state;
@@ -35,9 +41,8 @@ export const tokenExpireError = (dispatch, errorMessage) => {
   const role = localStorage.getItem("role");
   if (errorMessage === "TOKEN_EXPIRED") {
     dispatch({
-      type: "Logout",
+      type: "LOGOUT",
     });
-    window.location.href = "/" + role + "/login";
   }
 };
 
@@ -45,7 +50,11 @@ const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   React.useEffect(() => {
-    //TODO
+    sdk.check("admin").then((data) => {
+      if (data.message !== "OK") {
+        // dispatch();
+      }
+    });
   }, []);
 
   return (
