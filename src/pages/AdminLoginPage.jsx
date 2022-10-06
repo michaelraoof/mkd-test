@@ -27,20 +27,16 @@ const AdminLoginPage = () => {
 
   const onSubmit = async (data) => {
     let sdk = new MkdSDK();
+
+    sdk.login(data.email, data.password, "admin");
     //TODO
   };
 
   return (
     <div className="w-full max-w-xs mx-auto">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 mt-8 "
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 mt-8 ">
         <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="email"
-          >
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
             Email
           </label>
           <input
@@ -55,10 +51,7 @@ const AdminLoginPage = () => {
         </div>
 
         <div className="mb-6">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="password"
-          >
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
             Password
           </label>
           <input
@@ -69,9 +62,7 @@ const AdminLoginPage = () => {
               errors.password?.message ? "border-red-500" : ""
             }`}
           />
-          <p className="text-red-500 text-xs italic">
-            {errors.password?.message}
-          </p>
+          <p className="text-red-500 text-xs italic">{errors.password?.message}</p>
         </div>
         <div className="flex items-center justify-between">
           <input
